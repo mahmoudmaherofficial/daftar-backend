@@ -7,10 +7,12 @@ It enables users to manage invoices, products, customers, inventory, and generat
 
 ## 📦 Project Structure
 
+```
 daftar/
 │
-├── backend/ # Node.js + Express API
-└── frontend/ # Next.js App (App Router)
+├── backend/        # Node.js + Express API
+└── frontend/       # Next.js App (App Router)
+```
 
 ---
 
@@ -78,33 +80,55 @@ git clone https://github.com/your-username/daftar.git
 cd daftar
 ```
 
-2. Setup Backend
+---
+
+### 2. Setup Backend
+
+```bash
 cd backend
 npm install
+```
 
-Create a .env file inside /backend:
-env
+Create a `.env` file inside `/backend`:
 
+```env
 PORT=5000
 MONGO_URI=your_mongodb_connection
 JWT_SECRET=your_jwt_secret
+```
 
 Run the backend:
-npm run dev
 
-3. Setup Frontend
+```bash
+npm run dev
+```
+
+---
+
+### 3. Setup Frontend
+
+```bash
 cd frontend
 npm install
+```
 
-Create a .env.local file inside /frontend:
-env
+Create a `.env.local` file inside `/frontend`:
 
+```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
 Run the frontend:
+
+```bash
 npm run dev
+```
 
-Frontend will be running at: http://localhost:3000
+Frontend will be running at: [http://localhost:3000](http://localhost:3000)
 
-👨‍💻 Author
-Daftar - دفتر built with 💙 by [Mahmoud Maher]
+---
+
+## 👨‍💻 Author
+
+**Daftar - دفتر** built with 💙 by [Your Name]  
 Feel free to contribute or customize it for your business needs!
