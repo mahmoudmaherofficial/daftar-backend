@@ -1,134 +1,68 @@
-# 📘 Daftar - دفتر
+# Daftar - دفتر (Backend)
 
-**Daftar (دفتر)** is a full-featured **Invoice Management System** built using **Node.js**, **Express**, **MongoDB**, and **Next.js (App Router)**.  
-It enables users to manage invoices, products, customers, inventory, and generate detailed sales reports through a clean and modern UI.
+This is the backend of the **Daftar** Invoice Management System, built with Node.js, Express, and MongoDB.
 
----
+## Features
 
-## 📦 Project Structure
+- **Authentication & Authorization**
+  - JWT-based login system
+  - Role-based access control (`admin`, `seller`, `user`)
+- **Invoice Management**
+  - Create, update, delete, and fetch invoices
+  - Tracks total amount, status, and related customer/products
+- **Product Management**
+  - Manage product catalog with pricing and stock
+- **Customer Management**
+  - Add, update, and delete customer records
+- **Inventory Management**
+  - Track stock increase/decrease
+  - Inventory transaction logging
+- **Reports**
+  - Daily revenue
+  - Monthly sales
+  - Sales by product
+  - Revenue by customer
+  - Low stock products
+  - Unpaid invoices
+  - Inventory movement
 
-```
-daftar/
-│
-├── backend/        # Node.js + Express API
-└── frontend/       # Next.js App (App Router)
-```
+## Technologies Used
 
----
+- **Node.js**
+- **Express.js**
+- **MongoDB** with **Mongoose**
+- **JWT** for authentication
+- **dotenv** for environment variable management
 
-## 🚀 Features
+## Setup Instructions
 
-### 🔧 Backend (Express + MongoDB)
-- JWT Authentication with Role-based Access
-- RESTful APIs for Users, Products, Invoices, and Customers
-- Inventory transactions and stock management
-- Advanced reports (Revenue, Stock, Sales, etc.)
+1. Clone the repository
+2. Navigate to the backend folder:
+   ```bash
+   cd backend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Create a `.env` file and configure:
+   ```
+   PORT=5000
+   MONGO_URI=your_mongo_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
+5. Start the server:
+   ```bash
+   npm run dev
+   ```
 
-### 🎨 Frontend (Next.js + Tailwind CSS)
-- Role-based dashboard (Admin, Seller)
-- Create & manage invoices
-- Manage customers & products
-- Inventory management UI
-- Sales & performance reports
-- PDF invoice generation
-- Fully responsive design
+## Folder Structure
 
----
+- `/models` – Mongoose schemas
+- `/controllers` – Business logic
+- `/routes` – API route definitions
+- `/middlewares` – Auth and error middlewares
 
-## 🌐 Live Demo
+## License
 
-_coming soon..._
-
----
-
-## 📂 Postman Collection
-
-You can test all APIs using the included Postman collection:  
-📁 `postman/daftar.postman_collection.json`
-
----
-
-## 🧰 Tech Stack
-
-| Layer     | Technology                         |
-|-----------|------------------------------------|
-| Frontend  | Next.js (App Router), Tailwind CSS |
-| Backend   | Node.js, Express, MongoDB, JWT     |
-| Database  | MongoDB Atlas                      |
-| Auth      | JWT + Custom Roles (Admin/Seller)  |
-
----
-
-## 📊 Available Reports
-
-- 📆 Daily Revenue
-- 📉 Low Stock Products
-- 📦 Sales by Product
-- 💸 Unpaid Invoices
-- 👥 Revenue by Customer
-- 🔄 Inventory Movement
-- 📈 Monthly Sales
-
----
-
-## 🛠️ Installation & Setup
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/daftar.git
-cd daftar
-```
-
----
-
-### 2. Setup Backend
-
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file inside `/backend`:
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_jwt_secret
-```
-
-Run the backend:
-
-```bash
-npm run dev
-```
-
----
-
-### 3. Setup Frontend
-
-```bash
-cd frontend
-npm install
-```
-
-Create a `.env.local` file inside `/frontend`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-```
-
-Run the frontend:
-
-```bash
-npm run dev
-```
-
-Frontend will be running at: [http://localhost:3000](http://localhost:3000)
-
----
-
-## 👨‍💻 Author
-
-**Daftar - دفتر** built with 💙 by [Your Name]  
-Feel free to contribute or customize it for your business needs!
+MIT
