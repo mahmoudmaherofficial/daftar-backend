@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar - API Overview</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    h2 {
+      color: #34495e;
+      margin-top: 2rem;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    code {
+      background: #eee;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 style="text-align: center;">📦 Daftar - Backend API</h1>
+    <p><strong>Daftar</strong> is a powerful backend API built using <strong>Node.js</strong>, <strong>Express</strong>,
+      and <strong>MongoDB</strong> for managing invoices, products, customers, stock, and detailed reports.</p>
+
+    <h2>🔧 Features</h2>
+    <ul>
+      <li>Authentication (JWT based)</li>
+      <li>Users & Roles Management</li>
+      <li>Customer Management</li>
+      <li>Product & Inventory Management</li>
+      <li>Invoice Management with payment tracking</li>
+      <li>Reports: Daily Revenue, Monthly Sales, Unpaid Invoices, etc.</li>
+    </ul>
+
+    <h2>🚀 Technologies Used</h2>
+    <ul>
+      <li>Node.js & Express</li>
+      <li>MongoDB & Mongoose</li>
+      <li>JWT for authentication</li>
+      <li>MVC architecture</li>
+      <li>Postman for API testing</li>
+    </ul>
+
+    <h2>📂 Folder Structure</h2>
+    <ul>
+      <li><code>/controllers</code> – Logic for handling each route</li>
+      <li><code>/routes</code> – API endpoints</li>
+      <li><code>/models</code> – Mongoose schemas</li>
+      <li><code>/middleware</code> – Auth and error handling</li>
+      <li><code>/utils</code> – Helper functions</li>
+    </ul>
+
+    <h2>📮 Main API Endpoints</h2>
+    <ul>
+      <li><code>POST /api/auth/register</code> – User registration</li>
+      <li><code>POST /api/auth/login</code> – User login</li>
+      <li><code>GET /api/users</code> – Get all users</li>
+      <li><code>GET /api/customers</code> – Get customers</li>
+      <li><code>POST /api/invoices</code> – Create invoice</li>
+      <li><code>GET /api/reports/daily-revenue</code> – Daily revenue report</li>
+      <li><em>...and more</em></li>
+    </ul>
+
+    <h2>📁 Database</h2>
+    <p>MongoDB collections include:</p>
+    <ul>
+      <li><code>Users</code></li>
+      <li><code>Customers</code></li>
+      <li><code>Products</code></li>
+      <li><code>Invoices</code></li>
+      <li><code>InventoryTransactions</code></li>
+    </ul>
+
+    <h2>✅ Usage</h2>
+    <ol>
+      <li>Clone the repository</li>
+      <li>Run <code>npm install</code></li>
+      <li>Configure <code>.env</code> with Mongo URI and JWT secret</li>
+      <li>Run <code>npm run dev</code> to start the server</li>
+    </ol>
+
+    <div class="footer">
+      &copy; 2025 Daftar API – Developed by Mahmoud Maher
+    </div>
+  </div>
+</body>
+
+</html>

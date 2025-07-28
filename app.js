@@ -1,6 +1,9 @@
 // app.js
 import express from 'express';
 import cors from 'cors';
+import path from "path";
+import { fileURLToPath } from "url";
+
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import customerRoutes from './routes/customer.routes.js';
@@ -12,13 +15,20 @@ import reportRoutes from "./routes/report.routes.js";
 
 const app = express();
 
+// Get __dirname in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from 'public' folder
+app.use(express.static(path.join(__dirname, "public")));
+
 // Routes
-app.get('/', (req, res) => {
-  res.send('Daftar - Backend API');
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
