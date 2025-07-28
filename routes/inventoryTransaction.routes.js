@@ -6,12 +6,13 @@ import {
   getInventoryTransactionById,
   deleteInventoryTransaction,
 } from "../controllers/inventoryTransaction.controller.js";
+import { isAdmin, verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/", createInventoryTransaction);
-router.get("/", getAllInventoryTransactions);
-router.get("/:id", getInventoryTransactionById);
-router.delete("/:id", deleteInventoryTransaction);
+router.post("/",verifyToken, isAdmin, createInventoryTransaction);
+router.get("/",verifyToken, isAdmin, getAllInventoryTransactions);
+router.get("/:id",verifyToken, isAdmin, getInventoryTransactionById);
+router.delete("/:id",verifyToken, isAdmin, deleteInventoryTransaction);
 
 export default router;
