@@ -54,12 +54,14 @@ export const loginUser = async (req, res) => {
     }
 
     const accessToken = generateAccessToken(user)
+
     res.cookie('accessToken', accessToken, {
       // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: '/',
-      domain: process.env.DOMAIN
+      domain: process.env.DOMAIN,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // أسبوع
     });
 
     const { password: _, ...userWithoutPassword } = user.toObject();
@@ -85,3 +87,15 @@ export const logoutUser = async (req, res) => {
     return res.status(500).json({ message: 'Failed to logout user', error });
   }
 };
+
+export const getCurrentUser = async (req, res) => {
+  const user = req.user;
+  if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+  try {
+    const fetchedUser = await User.findById(user.id).select('-password')
+    res.json({ user: fetchedUser });
+  } catch (err) {
+    res.status(404).json({ message: "User not found" });
+  }
+}
