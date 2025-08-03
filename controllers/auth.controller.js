@@ -30,6 +30,15 @@ export const registerUser = async (req, res) => {
     });
 
     const accessToken = generateAccessToken(newUser)
+    
+    res.cookie('accessToken', accessToken, {
+      // httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: '/',
+      domain: process.env.DOMAIN,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // أسبوع
+    });
 
     res.status(201).json({ message: 'Account created successfully', user: newUser, accessToken });
   } catch (error) {
