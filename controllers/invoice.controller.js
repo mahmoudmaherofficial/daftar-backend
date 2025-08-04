@@ -1,5 +1,6 @@
 // controllers/invoice.controller.js
 
+import mongoose from 'mongoose';
 import Invoice from '../models/Invoice.js';
 import Product from '../models/Product.js';
 
@@ -48,57 +49,40 @@ export const getInvoices = async (req, res) => {
   try {
     const { page = 1, limit = 10, search = '' } = req.query;
 
-    // عامل بحث على اسم العميل أو رقم الموبايل
-    const searchRegex = new RegExp(search, 'i');
+    // البحث فقط حسب حالة الدفع (status)
+    const query = search ? { status: search } : {};
 
-    const query = search
-      ? {
-        $or: [
-          { notes: searchRegex },
-          { status: searchRegex },
-        ],
-      }
-      : {};
-
-    const invoices = await Invoice.find(query)
+    const allInvoices = await Invoice.find(query)
       .populate({
         path: 'customer',
-        select: 'name phone',
-        match: {
-          $or: [
-            { name: searchRegex },
-            { phone: searchRegex },
-          ],
-        },
+        select: 'name phone', // هنحتفظ بعرض بيانات العميل بس من غير فلترة
       })
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
       .sort({ createdAt: -1 });
 
-    // حذف الفواتير اللي مالهاش customer مطابق للبحث
-    const filteredInvoices = invoices.filter(inv => inv.customer);
-
-    const total = await Invoice.countDocuments(query);
+    // pagination
+    const paginatedInvoices = allInvoices.slice(
+      (page - 1) * limit,
+      page * limit
+    );
 
     res.status(200).json({
-      invoices: filteredInvoices,
-      total: filteredInvoices.length,
+      invoices: paginatedInvoices,
+      total: allInvoices.length,
       page: Number(page),
       limit: Number(limit),
-      totalPages: Math.ceil(filteredInvoices.length / limit),
+      totalPages: Math.ceil(allInvoices.length / limit),
     });
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch invoices', error });
   }
 };
 
-
 // Get single invoice
 export const getInvoiceById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const invoice = await Invoice.findById(id).populate('customer', 'name phone');
+    const invoice = await Invoice.findById(id).populate('customer', 'name phone').populate('items.product', 'name');
 
     if (!invoice) {
       return res.status(404).json({ message: 'Invoice not found' });
@@ -136,17 +120,50 @@ export const updateInvoice = async (req, res) => {
 
 // Delete invoice
 export const deleteInvoice = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { id } = req.params;
 
-    const deleted = await Invoice.findByIdAndDelete(id);
-
-    if (!deleted) {
+    // Fetch the invoice to get its items
+    const invoice = await Invoice.findById(id).session(session);
+    if (!invoice) {
+      await session.abortTransaction();
+      session.endSession();
       return res.status(404).json({ message: 'Invoice not found' });
     }
 
-    res.status(200).json({ message: 'Invoice deleted successfully', invoice: deleted });
+    // Update stock for each product in the invoice's items
+    for (const item of invoice.items) {
+      const product = await Product.findById(item.product._id).session(session);
+      if (!product) {
+        await session.abortTransaction();
+        session.endSession();
+        return res.status(404).json({ message: `Product ${item.product._id} not found` });
+      }
+
+      // Increase stock by the item's quantity
+      product.stock = (product.stock || 0) + item.quantity;
+      await product.save({ session });
+    }
+
+    // Delete the invoice
+    const deleted = await Invoice.findByIdAndDelete(id).session(session);
+    if (!deleted) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(404).json({ message: 'Invoice not found' });
+    }
+
+    // Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(200).json({ message: 'Invoice deleted successfully and stock updated', invoice: deleted });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to delete invoice', error });
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({ message: 'Failed to delete invoice or update stock', error: error.message });
   }
 };
